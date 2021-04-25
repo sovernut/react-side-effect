@@ -27,8 +27,8 @@ const passwordReducer = (state, action) => {
 const Login = (props) => {
   // const [enteredEmail, setEnteredEmail] = useState('');
   // const [emailIsValid, setEmailIsValid] = useState();
-  const [enteredPassword, setEnteredPassword] = useState('');
-  const [passwordIsValid, setPasswordIsValid] = useState();
+  // const [enteredPassword, setEnteredPassword] = useState('');
+  // const [passwordIsValid, setPasswordIsValid] = useState();
   const [formIsValid, setFormIsValid] = useState(false);
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, { value: '', isValid: false })
@@ -39,31 +39,34 @@ const Login = (props) => {
   //   return () => console.log('clean up effect')
   // }, [])
 
-  // useEffect(() => {
-  //   const timeoutHandler = setTimeout(() => {
-  //     console.log("form validating")
-  //     setFormIsValid(
-  //       enteredEmail.includes('@') && enteredPassword.trim().length > 6
-  //     );
-  //   }, 500)
-  //   return () => {
-  //     console.log("Clean up")
-  //     clearTimeout(timeoutHandler)
-  //   } // clean up process run before 2nd++ round
-  // }, [enteredEmail, enteredPassword])
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
+  
+  useEffect(() => {
+    const timeoutHandler = setTimeout(() => {
+      console.log("form validating")
+      setFormIsValid(
+        emailState.isValid && passwordState.isValid
+      );
+    }, 500)
+    return () => {
+      console.log("Clean up")
+      clearTimeout(timeoutHandler)
+    } // clean up process run before 2nd++ round
+  }, [emailIsValid, passwordIsValid])
 
   const emailChangeHandler = (event) => {
     dispatchEmail({type: 'USER_INPUT', val: event.target.value});
-    setFormIsValid(
-      emailState.isValid && passwordState.isValid
-    );
+    // setFormIsValid(
+    //   emailState.isValid && passwordState.isValid
+    // );
   };
 
   const passwordChangeHandler = (event) => {
     dispatchPassword({type: 'USER_INPUT', val: event.target.value});
-    setFormIsValid(
-      emailState.isValid && passwordState.isValid
-    );
+    // setFormIsValid(
+    //   emailState.isValid && passwordState.isValid
+    // );
   };
 
   const validateEmailHandler = () => {
